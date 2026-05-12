@@ -1,4 +1,4 @@
-const api = 'http://localhost:5004/api'
+
 
 export const addFavorites = async(movieId , token)=>{
 
