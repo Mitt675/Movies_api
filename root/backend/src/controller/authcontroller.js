@@ -6,10 +6,10 @@ const prisma = new PrismaClient();
 
 exports.signup = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password , userName } = req.body;
 
-    if (!email || !password) {
-      return res.status(400).json("email and password both are required");
+    if (!email || !password || !userName) {
+      return res.status(400).json("email, password and username are required");
     }
 
     const existingUser = await prisma.user.findUnique({
@@ -26,6 +26,7 @@ exports.signup = async (req, res) => {
       data: {
         email,
         password: hashedPwd,
+        userName
       },
     });
 
@@ -38,7 +39,8 @@ exports.signup = async (req, res) => {
     return res.status(201).json({
       message: "user created successfully",
       userId: user.id,
-      token
+      token,
+      userName
     });
 
   } catch (err) {
@@ -76,7 +78,10 @@ exports.login = async (req, res) => {
 
     return res.status(200).json({
       token,
-      message: "login successful",
+      user: {
+        id: user.id,
+        userName: user.userName
+      }
     });
 
   } catch (err) {

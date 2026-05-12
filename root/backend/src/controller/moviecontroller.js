@@ -9,14 +9,15 @@ console.log(BASE_URL);
 exports.getPopularMovies = async (req, res) => {
   try {
 
-    
     const response = await axios.get(`${BASE_URL}/movie/popular`, {
       params: { api_key: API_KEY }
     });
 
     res.json(response.data.results);
+
   } catch (err) {
-    res.status(500).json({ err });
+    console.error("TMDB ERROR:", err.response?.data || err.message);
+    res.status(500).json({ error: err.message });
   }
 };
 

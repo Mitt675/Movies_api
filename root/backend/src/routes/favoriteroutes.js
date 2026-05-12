@@ -10,14 +10,15 @@ router.post('/favorites', authMiddleware, async (req, res) => {
   const userId = req.userId
 
   try {
-    const favorite = await prisma.Favorite.create({
+    const Favorite = await prisma.favorite.create({
       data: {
         movieId,
         userId
       }
     })
 
-    res.status(201).json(favorite)
+    res.status(201).json(Favorite)
+    
   }
   catch (err) {
     res.status(404).json("Movie already exist in favorites")
@@ -27,7 +28,7 @@ router.post('/favorites', authMiddleware, async (req, res) => {
 router.get('/favorites', authMiddleware, async (req, res) => {
   const userId = req.userId
 
-  const favorites = await prisma.Favorite.findMany({
+  const favorites = await prisma.favorite.findMany({
     where: {
       userId
     }
@@ -35,17 +36,18 @@ router.get('/favorites', authMiddleware, async (req, res) => {
   res.status(200).json(favorites)
 })
 
-router.delete('/favorite/:id', authMiddleware, async (req, res) => {
+router.delete('/favorites/:movieId', authMiddleware, async (req, res) => {
+
   const userId = req.userId
   const movieId = req.params.movieId
 
-  await prisma.Favorite.deleteMany({
+  await prisma.favorite.deleteMany({
     where: {
       userId,
       movieId
     }
   })
-  res.status(200).json("movie delted from favorites successfully")
-})
 
+  res.status(200).json("movie deleted from favorites")
+})
 module.exports = router

@@ -1,31 +1,29 @@
 import "../css/Favorite.css"
 import { useState, useEffect } from "react"
 import MovieCard from "../components/MovieCard"
+import { getFavorites } from "../services/favoriteapi"
 
 function Favorite() {
   const [favorites, setFavorites] = useState([])
 
-  useEffect(() => {
-    const loadFavorites = () => {
-      const savedFavorites = JSON.parse(localStorage.getItem('favorites') || '[]')
-      setFavorites(savedFavorites)
+ useEffect(()=>{
+  const loadFavorites = async()=>{
+    const token = localStorage.getItem.token
+
+    if(!token) return
+
+    try{
+        const data = await getFavorites(token)
+        setFavorites(data)
     }
-
-    loadFavorites()
-
-    const handleStorageChange = () => {
-      loadFavorites()
+    catch(err){
+      console.error(err)
     }
+  }
 
-    window.addEventListener('storage', handleStorageChange)
+  loadFavorites()
 
-    const interval = setInterval(handleStorageChange, 1000)
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange)
-      clearInterval(interval)
-    }
-  }, [])
+ },[])
 
   return (
     <div className="favorite-page">

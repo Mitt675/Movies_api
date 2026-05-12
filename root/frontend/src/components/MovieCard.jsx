@@ -1,26 +1,34 @@
 import "../css/Moviecard.css"
-import { useState, useEffect } from "react"
+import { useState } from "react"
+import {   addFavorites , delteFavorite } from "../services/favoriteapi"
+
 
 function MovieCard({ movie }) {
     const [isFavorite, setIsFavorite] = useState(false)
 
-    useEffect(() => {
-        const favorites = JSON.parse(localStorage.getItem('favorites') || '[]')
-        setIsFavorite(favorites.some(fav => fav.id === movie.id))
-    }, [movie.id])
+    const toggleFavorite = async() => {
+        const token = localStorage.getItem("token")
+        
+         if(!token)   {
+            alert('please signup or login first')
+            return
+         }
 
-    const toggleFavorite = () => {
-        const favorites = JSON.parse(localStorage.getItem('favorites') || '[]')
+         try{
+            if(isFavorite){
+                await delteFavorite(movie.id,token)
+                setIsFavorite(false)
+            }
+            else{
+                await addFavorites(movie.id,token)
+                setIsFavorite(true)
+            }
+         }
+         catch(err){
+            console.error(err)
+         }
 
-        if (isFavorite) {
-            const newFavorites = favorites.filter(fav => fav.id !== movie.id)
-            localStorage.setItem('favorites', JSON.stringify(newFavorites))
-            setIsFavorite(false)
-        } else {
-            const newFavorites = [...favorites, movie]
-            localStorage.setItem('favorites', JSON.stringify(newFavorites))
-            setIsFavorite(true)
-        }
+        
     }
 
     return <div className="movie-card">
