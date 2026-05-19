@@ -2,17 +2,28 @@ import "../css/Favorite.css"
 import { useState, useEffect } from "react"
 import MovieCard from "../components/MovieCard"
 import { getFavorites } from "../services/favoriteapi"
+import { Link } from "react-router-dom"
+// import { useNavigate } from "react-router-dom"
+
+
 
 function Favorite() {
   const [favorites, setFavorites] = useState([])
+  // const navigate = useNavigate()
+  const Username = localStorage.getItem("userName")
 
  useEffect(()=>{
   const loadFavorites = async()=>{
-    const token = localStorage.getItem.token
+    const token = localStorage.getItem("token")
 
-    if(!token) return
+   try{ 
+    
+    if(!token) {
+      alert("Get ur token already! Homie")
+      // navigate("/")
+    }
 
-    try{
+    
         const data = await getFavorites(token)
         setFavorites(data)
     }
@@ -28,6 +39,7 @@ function Favorite() {
   return (
     <div className="favorite-page">
       <h1>My Favorite Movies</h1>
+      <h3>{Username} love these</h3>
       {favorites.length > 0 ? (
         <div className="movies-grid">
           {favorites.map((movie) => (

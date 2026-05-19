@@ -6,6 +6,8 @@ exports.authMiddleware = (req,res,next) =>{
  
  if(!authHeader){
   return res.status(401).json('token is not provided')
+  alert(`where's the fuck your token, nigga`)
+  console.log(err);
  }
 
  const token = authHeader.split(' ')[1]
@@ -19,6 +21,7 @@ exports.authMiddleware = (req,res,next) =>{
  }
  catch(err){
   return res.status(500).json({message : err.message})
+  console.log(err.message);
  }
 
 }

@@ -21,19 +21,26 @@ router.post('/favorites', authMiddleware, async (req, res) => {
     
   }
   catch (err) {
-    res.status(404).json("Movie already exist in favorites")
+    res.status(500).json({data:err.message})
+    console.log(err.message);
   }
 })
 
 router.get('/favorites', authMiddleware, async (req, res) => {
-  const userId = req.userId
+ try{ 
 
+  const userId = req.userId
   const favorites = await prisma.favorite.findMany({
     where: {
       userId
     }
   })
   res.status(200).json(favorites)
+}
+catch(err){
+  return res.status(500).json({data:err.message})
+  console.log(err);
+}
 })
 
 router.delete('/favorites/:movieId', authMiddleware, async (req, res) => {

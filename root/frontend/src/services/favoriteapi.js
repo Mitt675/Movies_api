@@ -2,7 +2,7 @@
 
 export const addFavorites = async(movieId , token)=>{
 
-    const res = fetch(`http://localhost:5004/api/favorites/${movieId}`,{
+    const res = await fetch(`http://localhost:5004/api/favorites/${movieId}`,{
       method : "POST",
       headers:{
         "Content-Type" : "application/json",
@@ -18,7 +18,7 @@ export const addFavorites = async(movieId , token)=>{
 }
 
 export const delteFavorite = async(movieId,token)=>{
-  const res = fetch(`http://localhost:5004/api/favorites/${movieId}`,{
+  const res = await fetch(`http://localhost:5004/api/favorites/${movieId}`,{
     method : "DELTE",
     headers : {
       Authorization : `Bearer ${token}`
@@ -30,7 +30,7 @@ export const delteFavorite = async(movieId,token)=>{
 }
 
 export const getFavorites = async(token)=>{
-  const res = fetch(`http://localhost:5004/api/favorites`,{
+  const res = await fetch(`http://localhost:5004/api/favorites`,{
     method : "GET",
     headers : {
       Authorization : `Bearer ${token}`
